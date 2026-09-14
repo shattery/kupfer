@@ -1,0 +1,25 @@
+---
+import Layout from '../layouts/Layout.astro';
+import PageHero from '../components/PageHero.astro';
+import AdminDashboard from '../components/react/AdminDashboard';
+import { site } from '../data/site';
+---
+
+<Layout
+  title={`Admin | ${site.name}`}
+  description="Interner Bereich zur Pflege von Richtwerten und der Anfragen-Pipeline. Nur für den lokalen Testbetrieb."
+  keywords="Kupferkabel Ankaufspreis, Kupferkabel verkaufen, Kupferkabel Ankauf [ORT]"
+  robots="noindex, nofollow"
+>
+  <PageHero
+    eyebrow="Intern"
+    title="Preispflege und Anfragen"
+    text="Leichtgewichtiger lokaler Admin. Daten liegen in diesem Browser (localStorage), nicht auf einem Server."
+  />
+
+  <section class="py-16">
+    <div class="section-shell">
+      <AdminDashboard client:only="react" />
+    </div>
+  </section>
+</Layout>

@@ -1,0 +1,36 @@
+---
+import Layout from '../layouts/Layout.astro';
+import PageHero from '../components/PageHero.astro';
+import { faqs } from '../data/faq';
+import { site } from '../data/site';
+---
+
+<Layout
+  title={`FAQ | ${site.name}`}
+  description="Häufige Fragen zum Ankauf von Kupferkabeln: Ablauf vor Ort, Richtwerte, Auszahlung und große Mengen."
+  keywords="Kupferkabel verkaufen, Kupferkabel Ankaufspreis, Kupferkabel Ankauf [ORT]"
+>
+  <PageHero
+    eyebrow="FAQ"
+    title="Häufige Fragen"
+    text="Kurz und klar: Ankauf nur vor Ort, Preis nach Prüfung und Verwiegung, Auszahlung am Standort."
+  />
+
+  <section class="py-16">
+    <div class="section-shell max-w-3xl space-y-3">
+      {
+        faqs.map((item) => (
+          <details class="surface-card group p-0">
+            <summary class="cursor-pointer list-none px-6 py-5 font-medium text-slate-950 marker:content-none">
+              <span class="flex items-center justify-between gap-4">
+                {item.question}
+                <span class="text-copper-500 transition group-open:rotate-45">+</span>
+              </span>
+            </summary>
+            <p class="border-t border-slate-100 px-6 py-4 text-sm leading-relaxed text-slate-600">{item.answer}</p>
+          </details>
+        ))
+      }
+    </div>
+  </section>
+</Layout>

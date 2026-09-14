@@ -1,0 +1,29 @@
+---
+import Layout from '../layouts/Layout.astro';
+import PageHero from '../components/PageHero.astro';
+import PriceTable from '../components/react/PriceTable';
+import { site } from '../data/site';
+---
+
+<Layout
+  title={`Kupferkabel Ankaufspreis | ${site.name}`}
+  description="Unverbindliche Richtwerte für den Ankauf von Kupferkabeln. Der endgültige Preis wird nach Prüfung und Verwiegung vor Ort festgelegt."
+  keywords="Kupferkabel Ankaufspreis, Kupferkabel verkaufen, Kupferkabel Ankauf [ORT]"
+>
+  <PageHero
+    eyebrow="Richtwerte"
+    title="Ankaufspreise für Kupferkabel"
+    text="Unverbindliche Orientierung. Der verbindliche Ankaufspreis entsteht erst nach Prüfung und Verwiegung am Standort."
+  />
+
+  <section class="py-16">
+    <div class="section-shell">
+      <PriceTable client:load />
+      <p class="mt-6 max-w-3xl text-sm leading-relaxed text-slate-600">
+        Die Tabelle dient der Orientierung. Preise können je nach Reinheit, Mix und Marktlage abweichen.
+        Nutzen Sie den Rechner für eine Schätzung und verkaufen Sie ausschließlich vor Ort.
+      </p>
+      <a href="/kabel-verkaufen" class="btn-copper mt-8">KABEL VERKAUFEN</a>
+    </div>
+  </section>
+</Layout>

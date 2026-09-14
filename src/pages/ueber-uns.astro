@@ -1,0 +1,56 @@
+---
+import Layout from '../layouts/Layout.astro';
+import PageHero from '../components/PageHero.astro';
+import { site } from '../data/site';
+---
+
+<Layout
+  title={`Über uns | ${site.name}`}
+  description={`${site.name} kauft Kupferkabel ausschließlich vor Ort an. Transparenter Ablauf, Prüfung und Verwiegung am Firmenstandort.`}
+  keywords="Kupferkabel Ankauf [ORT], Kupferkabel verkaufen, Kupferkabel Ankaufspreis"
+>
+  <PageHero
+    eyebrow="Unternehmen"
+    title={site.name}
+    text="Seriöser Ankauf von Kupferkabeln. Ohne erfundene Historie – mit klarem Leistungsversprechen."
+  />
+
+  <section class="py-16">
+    <div class="section-shell max-w-3xl space-y-6 text-base leading-relaxed text-slate-700">
+      <p>
+        {site.name} kauft Kupferkabel persönlich am Standort {site.city} an. Wir bewerten Material nach Prüfung
+        und Verwiegung – nicht nach Schätzung aus der Ferne.
+      </p>
+      <p>
+        Unser Anspruch ist ein nachvollziehbarer Ablauf: Identifikation der Kabelart, Feststellung des Gewichts,
+        klares Angebot, Ankauf und Auszahlung vor Ort.
+      </p>
+      <p>
+        Es findet kein Versandhandel mit Altmaterial statt. Wer Kabel verkaufen möchte, kommt zum Firmenstandort
+        oder stimmt große Mengen vorab über den B2B-Kontakt ab.
+      </p>
+      <p>
+        Angaben zu Inhaberschaft, Handelsregister und Steuernummern werden hier bewusst als Platzhalter geführt
+        und vor dem Livegang durch die tatsächlichen Unternehmensdaten ersetzt.
+      </p>
+      <dl class="surface-card grid gap-4 p-6 sm:grid-cols-2">
+        <div>
+          <dt class="text-xs uppercase tracking-wide text-slate-400">Firma</dt>
+          <dd class="mt-1 font-medium text-slate-950">{site.legalEntity}</dd>
+        </div>
+        <div>
+          <dt class="text-xs uppercase tracking-wide text-slate-400">USt-IdNr.</dt>
+          <dd class="mt-1 font-medium text-slate-950">{site.vatId}</dd>
+        </div>
+        <div>
+          <dt class="text-xs uppercase tracking-wide text-slate-400">Adresse</dt>
+          <dd class="mt-1 font-medium text-slate-950">{site.street}, {site.city}</dd>
+        </div>
+        <div>
+          <dt class="text-xs uppercase tracking-wide text-slate-400">Kontakt</dt>
+          <dd class="mt-1 font-medium text-slate-950">{site.phone}</dd>
+        </div>
+      </dl>
+    </div>
+  </section>
+</Layout>

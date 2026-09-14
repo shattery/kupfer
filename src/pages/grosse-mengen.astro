@@ -1,0 +1,37 @@
+---
+import Layout from '../layouts/Layout.astro';
+import PageHero from '../components/PageHero.astro';
+import B2BInquiryForm from '../components/react/B2BInquiryForm';
+import { site } from '../data/site';
+---
+
+<Layout
+  title={`Große Mengen Kupferkabel | ${site.name}`}
+  description="B2B-Ankauf von Kupferkabeln für Handwerk, Elektriker und Industrie. Mengen und Termine werden vor Ort abgestimmt."
+  keywords="Kupferkabel verkaufen, Kupferkabel Ankaufspreis, Kupferkabel Ankauf [ORT]"
+>
+  <PageHero
+    eyebrow="B2B"
+    title="Große Mengen für Handwerk und Industrie"
+    text="Elektriker, Bauunternehmen und Industrie können Chargen vorab anfragen. Der Ankauf selbst erfolgt ausschließlich am Standort."
+  />
+
+  <section class="py-16">
+    <div class="section-shell grid gap-10 lg:grid-cols-[0.85fr_1.15fr]">
+      <div>
+        <h2 class="font-display text-2xl font-semibold text-slate-950">Für wen dieser Bereich ist</h2>
+        <ul class="mt-6 space-y-3 text-sm leading-relaxed text-slate-600">
+          <li>Elektroinstallationsbetriebe mit Rest- und Demontagekabeln</li>
+          <li>Bauunternehmen mit Leitungsrückbau</li>
+          <li>Industrie und Anlagenabbau mit größeren Chargen</li>
+        </ul>
+        <div class="mt-8 rounded-2xl bg-slate-950 p-6 text-white">
+          <p class="text-sm text-slate-300">Direktkontakt</p>
+          <p class="mt-2 font-medium">{site.phone}</p>
+          <p class="text-sm">{site.email}</p>
+        </div>
+      </div>
+      <B2BInquiryForm client:visible />
+    </div>
+  </section>
+</Layout>

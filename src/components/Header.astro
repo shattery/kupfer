@@ -1,0 +1,32 @@
+---
+import { site } from '../data/site';
+import SiteGooeyNav from './react/SiteGooeyNav';
+import SiteStaggeredMenu from './react/SiteStaggeredMenu';
+
+interface Props {
+  currentPath: string;
+}
+
+const { currentPath } = Astro.props;
+---
+
+{/* Desktop header */}
+<header class="sticky top-0 z-40 hidden border-b border-white/10 bg-slate-950/95 backdrop-blur-xl lg:block">
+  <div class="section-shell flex h-[4.25rem] items-center justify-between gap-6">
+    <a href="/" class="flex items-center gap-3 text-white">
+      <span class="grid h-9 w-9 place-items-center rounded-lg bg-copper-metal font-display text-sm font-bold">K</span>
+      <span class="font-display text-base font-semibold tracking-tight sm:text-lg">{site.name}</span>
+    </a>
+
+    <SiteGooeyNav client:load currentPath={currentPath} />
+
+    <a href="/kabel-verkaufen" class="btn-copper !px-6 !py-3 text-sm">KABEL VERKAUFEN</a>
+  </div>
+</header>
+
+{/* Mobile: React Bits Staggered Menu as full chrome (logo + Menu) */}
+<div class="lg:hidden">
+  <SiteStaggeredMenu client:load />
+  {/* spacer so content isn't under the fixed menu header */}
+  <div class="h-16 border-b border-white/10 bg-slate-950" aria-hidden="true"></div>
+</div>

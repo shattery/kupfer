@@ -1,0 +1,38 @@
+---
+import Layout from '../layouts/Layout.astro';
+import PageHero from '../components/PageHero.astro';
+import ProcessSteps from '../components/ProcessSteps.astro';
+import PhotoUploadForm from '../components/react/PhotoUploadForm';
+import { site } from '../data/site';
+---
+
+<Layout
+  title={`Kupferkabel verkaufen – Ablauf | ${site.name}`}
+  description="In fünf Schritten Kupferkabel vor Ort verkaufen: mitbringen, prüfen, wiegen, Angebot, Ankauf und Sofort-Auszahlung."
+  keywords="Kupferkabel verkaufen, Kupferkabel Ankaufspreis, Kupferkabel Ankauf [ORT]"
+>
+  <PageHero
+    eyebrow="Verkaufen"
+    title="Kabel vor Ort verkaufen"
+    text="Der komplette Ankauf findet persönlich am Firmenstandort statt. Bringen Sie Ihre Kabel mit oder klären Sie unklare Chargen zuerst per Foto."
+  />
+
+  <ProcessSteps />
+
+  <section class="bg-slate-50 py-16">
+    <div class="section-shell grid gap-10 lg:grid-cols-[0.9fr_1.1fr]">
+      <div>
+        <p class="kicker">Vorbereitung</p>
+        <h2 class="mt-3 font-display text-3xl font-semibold text-slate-950">So läuft der Termin ab</h2>
+        <ul class="mt-6 space-y-4 text-sm leading-relaxed text-slate-600">
+          <li>Bitte bringen Sie ein gültiges Ausweisdokument mit.</li>
+          <li>Sortierung nach Kabelart ist hilfreich, aber nicht zwingend.</li>
+          <li>Große Mengen bitte vorab über den B2B-Bereich anfragen.</li>
+          <li>Es gibt keine Annahme von Sendungen – nur persönliche Abgabe vor Ort.</li>
+        </ul>
+        <a href="/vor-ort-verkaufen" class="btn-copper mt-8">Standort & Öffnungszeiten</a>
+      </div>
+      <PhotoUploadForm client:visible />
+    </div>
+  </section>
+</Layout>
