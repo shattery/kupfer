@@ -1,6 +1,7 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import PageHero from '../components/PageHero.astro';
+import Surface from '../components/react/Surface';
 import { site } from '../data/site';
 ---
 
@@ -33,7 +34,8 @@ import { site } from '../data/site';
         Angaben zu Inhaberschaft, Handelsregister und Steuernummern werden hier bewusst als Platzhalter geführt
         und vor dem Livegang durch die tatsächlichen Unternehmensdaten ersetzt.
       </p>
-      <dl class="surface-card grid gap-4 p-6 sm:grid-cols-2">
+      <Surface client:visible className="surface-card">
+      <dl class="grid gap-4 p-6 sm:grid-cols-2">
         <div>
           <dt class="text-xs uppercase tracking-wide text-slate-400">Firma</dt>
           <dd class="mt-1 font-medium text-slate-950">{site.legalEntity}</dd>
@@ -51,6 +53,7 @@ import { site } from '../data/site';
           <dd class="mt-1 font-medium text-slate-950">{site.phone}</dd>
         </div>
       </dl>
+      </Surface>
     </div>
   </section>
 </Layout>

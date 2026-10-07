@@ -3,8 +3,16 @@ import Layout from '../layouts/Layout.astro';
 import ProcessSteps from '../components/ProcessSteps.astro';
 import Reviews from '../components/Reviews.astro';
 import MapPanel from '../components/MapPanel.astro';
-import PriceCalculator from '../components/react/PriceCalculator';
+import HeroAurora from '../components/react/HeroAurora';
+import HeroHeadline from '../components/react/HeroHeadline';
+import HeroCalculator from '../components/react/HeroCalculator';
 import HeroCounters from '../components/react/HeroCounters';
+import AdvantageCards from '../components/react/AdvantageCards';
+import CableMarquee from '../components/react/CableMarquee';
+import CopperCta from '../components/react/CopperCta';
+import ShinyText from '../components/reactbits/ShinyText/ShinyText';
+import BlurText from '../components/reactbits/BlurText/BlurText';
+import FadeContent from '../components/reactbits/FadeContent/FadeContent';
 import { mapsDirectionsUrl, site } from '../data/site';
 ---
 
@@ -14,66 +22,53 @@ import { mapsDirectionsUrl, site } from '../data/site';
   keywords="Kupferkabel verkaufen, Kupferkabel Ankaufspreis, Kupferkabel Ankauf [ORT]"
 >
   <section class="relative overflow-hidden bg-slate-950 text-white">
-    <div class="pointer-events-none absolute inset-0 bg-hero-grid bg-[size:48px_48px] opacity-40"></div>
-    <div class="pointer-events-none absolute -right-24 top-10 h-80 w-80 rounded-full bg-copper-500/20 blur-3xl"></div>
-    <div class="section-shell relative grid items-center gap-12 py-20 lg:grid-cols-[1.1fr_0.9fr] lg:py-28">
+    <div class="hero-wash pointer-events-none absolute inset-0 z-0" aria-hidden="true"></div>
+    <HeroAurora client:idle />
+    <div class="pointer-events-none absolute inset-0 z-0 bg-hero-grid bg-[size:48px_48px] opacity-25"></div>
+    <div class="pointer-events-none absolute inset-0 z-0 bg-gradient-to-r from-slate-950/80 via-slate-950/35 to-transparent"></div>
+    <div class="pointer-events-none absolute inset-x-0 bottom-0 z-[1] h-20 bg-gradient-to-b from-transparent to-white"></div>
+    <div class="section-shell relative z-10 grid items-center gap-12 py-20 lg:grid-cols-[1.1fr_0.9fr] lg:py-28">
       <div>
-        <p class="kicker text-copper-300">Kupferkabel Ankauf [ORT]</p>
-        <h1 class="mt-4 font-display text-4xl font-semibold tracking-tight text-balance sm:text-6xl">
-          Kupferkabel ankaufen.<br />Transparent. Vor Ort.
-        </h1>
+        <p class="kicker">
+          <ShinyText client:idle text="Kupferkabel Ankauf [ORT]" color="#e8c9a8" shineColor="#fffaf3" speed={3.2} />
+        </p>
+        <HeroHeadline client:idle />
         <p class="mt-5 max-w-xl text-lg leading-relaxed text-slate-300">
           Seriöser Ankauf von Kupferkabeln am Firmenstandort. Prüfung, Verwiegung und Auszahlung persönlich –
           ohne Paketversand.
         </p>
-        <div class="mt-8 flex flex-wrap gap-3">
-          <a href="/kabel-verkaufen" class="btn-copper">KABEL VERKAUFEN</a>
+        <div class="mt-8 flex flex-wrap items-center gap-3">
+          <CopperCta client:idle href="/kabel-verkaufen" label="KABEL VERKAUFEN" />
           <a href="/ankaufspreise" class="btn-ghost">Ankaufspreise ansehen</a>
         </div>
         <HeroCounters client:visible />
       </div>
-      <div class="rounded-3xl border border-white/10 bg-white/5 p-2 backdrop-blur">
-        <PriceCalculator client:load />
-      </div>
+      <HeroCalculator client:idle class="min-w-0" />
     </div>
   </section>
+
+  <CableMarquee client:visible />
 
   <section class="bg-white py-20">
     <div class="section-shell">
       <div class="max-w-2xl">
         <p class="kicker">Vorteile</p>
-        <h2 class="mt-3 font-display text-3xl font-semibold tracking-tight text-slate-950 sm:text-4xl">
-          Klarer Prozess statt Unsicherheit
-        </h2>
+        <BlurText
+          client:visible
+          as="h2"
+          text="Klarer Prozess statt Unsicherheit"
+          className="mt-3 font-display text-3xl font-semibold tracking-tight text-slate-950 sm:text-4xl"
+        />
       </div>
-      <div class="mt-10 grid gap-5 md:grid-cols-3">
-        <article class="surface-card p-6">
-          <h3 class="font-display text-xl font-semibold text-slate-950">Nur persönlich vor Ort</h3>
-          <p class="mt-2 text-sm leading-relaxed text-slate-600">
-            Alle Transaktionen finden am Firmenstandort statt. Keine Annahme von Sendungen.
-          </p>
-        </article>
-        <article class="surface-card p-6">
-          <h3 class="font-display text-xl font-semibold text-slate-950">Prüfung vor dem Preis</h3>
-          <p class="mt-2 text-sm leading-relaxed text-slate-600">
-            Kabelart, Reinheit und Gewicht bestimmen das Angebot – nachvollziehbar und nach Verwiegung.
-          </p>
-        </article>
-        <article class="surface-card p-6">
-          <h3 class="font-display text-xl font-semibold text-slate-950">Sofort-Auszahlung</h3>
-          <p class="mt-2 text-sm leading-relaxed text-slate-600">
-            Nach Annahme der Ware erfolgt die Auszahlung direkt vor Ort.
-          </p>
-        </article>
-      </div>
+      <AdvantageCards client:visible />
     </div>
   </section>
 
-  <ProcessSteps />
+  <ProcessSteps tone="muted" />
   <Reviews />
 
   <section class="bg-white py-20">
-    <div class="section-shell grid items-center gap-10 lg:grid-cols-2">
+    <FadeContent client:visible className="section-shell grid items-center gap-10 lg:grid-cols-2" duration={420}>
       <div>
         <p class="kicker">Standort</p>
         <h2 class="mt-3 font-display text-3xl font-semibold tracking-tight text-slate-950 sm:text-4xl">
@@ -82,10 +77,17 @@ import { mapsDirectionsUrl, site } from '../data/site';
         <p class="mt-3 text-slate-600">
           {site.street}<br />{site.city}<br />{site.phone}
         </p>
-        <a href={mapsDirectionsUrl()} class="btn-copper mt-6" target="_blank" rel="noopener noreferrer">Routenplaner öffnen</a>
+        <CopperCta
+          client:visible
+          className="mt-6"
+          href={mapsDirectionsUrl()}
+          label="Routenplaner öffnen"
+          target="_blank"
+          rel="noopener noreferrer"
+        />
         <p class="mt-4 text-sm text-slate-500">Mo–Fr {site.hoursWeekday} · Sa {site.hoursSaturday} · So {site.hoursSunday}</p>
       </div>
       <MapPanel class="h-80" />
-    </div>
+    </FadeContent>
   </section>
 </Layout>

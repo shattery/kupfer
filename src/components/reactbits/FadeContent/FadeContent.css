@@ -1,0 +1,6 @@
+@media (prefers-reduced-motion: reduce) {
+  .fade-content {
+    opacity: 1 !important;
+    filter: none !important;
+  }
+}

@@ -2,6 +2,7 @@
 import Layout from '../layouts/Layout.astro';
 import PageHero from '../components/PageHero.astro';
 import B2BInquiryForm from '../components/react/B2BInquiryForm';
+import Surface from '../components/react/Surface';
 import { site } from '../data/site';
 ---
 
@@ -25,11 +26,13 @@ import { site } from '../data/site';
           <li>Bauunternehmen mit Leitungsrückbau</li>
           <li>Industrie und Anlagenabbau mit größeren Chargen</li>
         </ul>
-        <div class="mt-8 rounded-2xl bg-slate-950 p-6 text-white">
-          <p class="text-sm text-slate-300">Direktkontakt</p>
-          <p class="mt-2 font-medium">{site.phone}</p>
-          <p class="text-sm">{site.email}</p>
-        </div>
+        <Surface client:visible className="mt-8 rounded-2xl bg-slate-950 text-white" delay={60}>
+          <div class="p-6">
+            <p class="text-sm text-slate-300">Direktkontakt</p>
+            <p class="mt-2 font-medium">{site.phone}</p>
+            <p class="text-sm">{site.email}</p>
+          </div>
+        </Surface>
       </div>
       <B2BInquiryForm client:visible />
     </div>

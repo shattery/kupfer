@@ -1,9 +1,9 @@
 # Impressum — ENTWURF (Kupfer-/Kabelankauf)
 
-Werte aus `src/data/site.ts` ersetzen (aktuell noch Platzhalter `[FIRMENNAME]` etc.).
+Werte aus `src/data/site.ts` ersetzen (Name ist Cupravo, Anschrift und Kontakt sind noch Platzhalter).
 
 ## Anbieter
-[FIRMENNAME]  
+Cupravo  
 [STRASSE + HAUSNUMMER]  
 [PLZ + ORT]
 

@@ -1,5 +1,5 @@
 export const site = {
-  name: '[FIRMENNAME]',
+  name: 'Cupravo',
   street: '[STRASSE + HAUSNUMMER]',
   city: '[PLZ + ORT]',
   phone: '[TELEFONNUMMER]',
@@ -7,9 +7,18 @@ export const site = {
   hoursWeekday: '[ÖFFNUNGSZEIT MO–FR]',
   hoursSaturday: '[ÖFFNUNGSZEIT SA]',
   hoursSunday: 'geschlossen',
-  legalEntity: '[FIRMENNAME]',
+  legalEntity: 'Cupravo',
   vatId: '[UST-ID]',
+  /** Inhaber / Geschäftsführer für Impressum */
+  representative: '[Inhaber / GF — Vor- und Nachname]',
+  /** Handelsregister oder „nicht eingetragen“ */
+  registerInfo: '[Handelsregister oder „nicht eingetragen“]',
   formspreeEndpoint: 'https://formspree.io/f/mwlkwbzk',
+  /**
+   * Hero-Kennzahl „Jahre Erfahrung“.
+   * `null` = Counter ausblenden, bis der echte Wert steht (keine Fake-Zahlen).
+   */
+  yearsExperience: null as number | null,
 } as const;
 
 export const processSteps = [
@@ -40,26 +49,16 @@ export const processSteps = [
   },
 ] as const;
 
-export const reviews = [
-  {
-    author: '[KUNDENNAME]',
-    source: 'Google',
-    rating: 5,
-    quote: '[ZITAT AUS GOOGLE-REZENSION]',
-  },
-  {
-    author: '[KUNDENNAME]',
-    source: 'Google',
-    rating: 5,
-    quote: '[ZITAT AUS GOOGLE-REZENSION]',
-  },
-  {
-    author: '[KUNDENNAME]',
-    source: 'Google',
-    rating: 5,
-    quote: '[ZITAT AUS GOOGLE-REZENSION]',
-  },
-] as const;
+/**
+ * Nur echte, freigegebene Google-Rezensionen eintragen.
+ * Leer = Bewertungsblock auf der Startseite wird nicht gerendert.
+ */
+export const reviews: ReadonlyArray<{
+  author: string;
+  source: string;
+  rating: number;
+  quote: string;
+}> = [];
 
 export const navItems = [
   { href: '/ankaufspreise', label: 'Ankaufspreise' },
@@ -70,6 +69,24 @@ export const navItems = [
   { href: '/faq', label: 'FAQ' },
   { href: '/kontakt', label: 'Kontakt' },
 ] as const;
+
+/** Sekundär: Desktop unter „Mehr“, mobil weiter in der Liste. */
+const moreNavHrefs = new Set<string>(['/vor-ort-verkaufen', '/grosse-mengen', '/faq']);
+
+export const primaryNav = navItems.filter((item) => !moreNavHrefs.has(item.href));
+
+export const moreNav = [
+  ...navItems.filter((item) => moreNavHrefs.has(item.href)),
+  { href: '/ueber-uns', label: 'Über uns' },
+];
+
+export function isNavActive(currentPath: string, href: string): boolean {
+  const normalize = (value: string) => {
+    const path = value.split(/[?#]/)[0].replace(/\/+$/, '');
+    return path === '' ? '/' : path;
+  };
+  return normalize(currentPath) === normalize(href);
+}
 
 export function mapsSearchUrl(): string {
   const query = `${site.street}, ${site.city}`;

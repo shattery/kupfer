@@ -1,6 +1,6 @@
 ---
-import { site } from '../data/site';
-import SiteGooeyNav from './react/SiteGooeyNav';
+import { isNavActive, moreNav, primaryNav, site } from '../data/site';
+import CopperCta from './react/CopperCta';
 import SiteStaggeredMenu from './react/SiteStaggeredMenu';
 
 interface Props {
@@ -8,25 +8,162 @@ interface Props {
 }
 
 const { currentPath } = Astro.props;
+const moreActive = moreNav.some((item) => isNavActive(currentPath, item.href));
+
+const linkClass = (active: boolean) =>
+  [
+    'rounded-full px-3 py-2 text-sm font-medium tracking-tight whitespace-nowrap transition-colors duration-200',
+    'focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-copper-200',
+    active
+      ? 'bg-copper-400/15 text-copper-100 ring-1 ring-inset ring-copper-300/45'
+      : 'text-slate-300 hover:bg-white/5 hover:text-white',
+  ].join(' ');
 ---
 
-{/* Desktop header */}
-<header class="sticky top-0 z-40 hidden border-b border-white/10 bg-slate-950/95 backdrop-blur-xl lg:block">
-  <div class="section-shell flex h-[4.25rem] items-center justify-between gap-6">
-    <a href="/" class="flex items-center gap-3 text-white">
-      <span class="grid h-9 w-9 place-items-center rounded-lg bg-copper-metal font-display text-sm font-bold">K</span>
-      <span class="font-display text-base font-semibold tracking-tight sm:text-lg">{site.name}</span>
+<header class="sticky top-0 z-40 h-[4.25rem] border-b border-white/10 bg-slate-950/95 backdrop-blur-xl">
+  <div class="section-shell flex h-full items-center justify-between gap-3 sm:gap-4">
+    <a href="/" class="flex min-w-0 shrink items-center gap-2.5 text-white sm:gap-3">
+      <img src="/logo-mark.svg" alt="Cupravo" width="36" height="36" class="h-9 w-9 shrink-0" />
+      <span aria-hidden="true" class="max-w-[9rem] truncate font-display text-base font-semibold tracking-tight sm:max-w-[14rem] lg:max-w-[12rem] xl:max-w-none">{site.name}</span>
     </a>
 
-    <SiteGooeyNav client:load currentPath={currentPath} />
+    <nav class="hidden min-w-0 flex-1 items-center justify-center gap-0.5 lg:flex xl:gap-1" aria-label="Hauptnavigation">
+      {
+        primaryNav.map((item) => (
+          <a
+            href={item.href}
+            aria-current={isNavActive(currentPath, item.href) ? 'page' : undefined}
+            class={linkClass(isNavActive(currentPath, item.href))}
+          >
+            {item.label}
+          </a>
+        ))
+      }
 
-    <a href="/kabel-verkaufen" class="btn-copper !px-6 !py-3 text-sm">KABEL VERKAUFEN</a>
+      <details data-nav-more class="group relative">
+        <summary
+          class:list={[
+            linkClass(moreActive),
+            'flex cursor-pointer list-none items-center gap-1 marker:content-none',
+          ]}
+        >
+          Mehr
+          <svg
+            class="h-3.5 w-3.5 opacity-80 transition-transform duration-200 group-open:rotate-180"
+            viewBox="0 0 20 20"
+            fill="currentColor"
+            aria-hidden="true"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M5.23 7.21a.75.75 0 0 1 1.06.02L10 11.17l3.71-3.94a.75.75 0 1 1 1.08 1.04l-4.25 4.5a.75.75 0 0 1-1.08 0l-4.25-4.5a.75.75 0 0 1 .02-1.06Z"
+              clip-rule="evenodd"></path>
+          </svg>
+        </summary>
+        <div
+          class="absolute right-0 top-[calc(100%+0.6rem)] z-50 min-w-[13.5rem] rounded-2xl border border-white/10 bg-slate-950/95 p-1.5 shadow-[0_18px_40px_-16px_rgba(0,0,0,0.75)] backdrop-blur-xl"
+        >
+          {
+            moreNav.map((item) => (
+              <a
+                href={item.href}
+                aria-current={isNavActive(currentPath, item.href) ? 'page' : undefined}
+                class:list={[
+                  'block rounded-xl px-3 py-2.5 text-sm font-medium transition-colors',
+                  'focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-copper-200',
+                  isNavActive(currentPath, item.href)
+                    ? 'bg-copper-400/15 text-copper-100'
+                    : 'text-slate-300 hover:bg-white/5 hover:text-white',
+                ]}
+              >
+                {item.label}
+              </a>
+            ))
+          }
+        </div>
+      </details>
+    </nav>
+
+    <div class="flex shrink-0 items-center gap-1 sm:gap-2">
+      <div class="hidden lg:block">
+        <CopperCta client:load href="/kabel-verkaufen" label="KABEL VERKAUFEN" compact />
+      </div>
+      <button
+        type="button"
+        data-nav-toggle
+        class="inline-flex min-w-[8rem] items-center justify-end gap-2 rounded-full px-1.5 py-2 text-sm font-semibold tracking-wide text-white transition-colors hover:text-copper-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white/80 lg:hidden"
+        aria-expanded="false"
+        aria-controls="staggered-menu-panel"
+        aria-label="Menü öffnen"
+      >
+        <span data-nav-toggle-label>Menü</span>
+        <span class="relative h-3.5 w-3.5 shrink-0" data-nav-toggle-icon aria-hidden="true">
+          <span
+            class="nav-toggle-h absolute left-0 top-1/2 h-0.5 w-full -translate-y-1/2 rounded-full bg-current transition-transform duration-300"
+          ></span>
+          <span
+            class="nav-toggle-v absolute left-1/2 top-0 h-full w-0.5 -translate-x-1/2 rounded-full bg-current transition-transform duration-300"
+          ></span>
+        </span>
+      </button>
+    </div>
   </div>
 </header>
 
-{/* Mobile: React Bits Staggered Menu as full chrome (logo + Menu) */}
-<div class="lg:hidden">
-  <SiteStaggeredMenu client:load />
-  {/* spacer so content isn't under the fixed menu header */}
-  <div class="h-16 border-b border-white/10 bg-slate-950" aria-hidden="true"></div>
+<div class="contents lg:hidden">
+  <SiteStaggeredMenu client:load currentPath={currentPath} />
 </div>
+
+<style>
+  [data-nav-toggle][aria-expanded='true'] .nav-toggle-h {
+    transform: translateY(-50%) rotate(45deg);
+  }
+
+  [data-nav-toggle][aria-expanded='true'] .nav-toggle-v {
+    transform: translateX(-50%) rotate(45deg);
+  }
+</style>
+
+<script>
+  function bindHeaderNav() {
+    const menu = document.querySelector<HTMLDetailsElement>('[data-nav-more]');
+    const toggle = document.querySelector<HTMLButtonElement>('[data-nav-toggle]');
+
+    if (menu && menu.dataset.bound !== 'true') {
+      menu.dataset.bound = 'true';
+
+      document.addEventListener('click', (event) => {
+        if (!menu.open) return;
+        const target = event.target;
+        if (!(target instanceof Node) || !menu.contains(target)) menu.open = false;
+      });
+
+      document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape' && menu.open) {
+          menu.open = false;
+          menu.querySelector('summary')?.focus();
+        }
+      });
+    }
+
+    if (toggle && toggle.dataset.bound !== 'true') {
+      toggle.dataset.bound = 'true';
+
+      toggle.addEventListener('click', () => {
+        window.dispatchEvent(new CustomEvent('site-nav-toggle'));
+      });
+
+      window.addEventListener('site-nav-state', (event) => {
+        const detail = (event as CustomEvent<{ open?: boolean }>).detail;
+        const open = Boolean(detail?.open);
+        toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+        toggle.setAttribute('aria-label', open ? 'Menü schließen' : 'Menü öffnen');
+        const label = toggle.querySelector('[data-nav-toggle-label]');
+        if (label) label.textContent = open ? 'Schließen' : 'Menü';
+      });
+    }
+  }
+
+  bindHeaderNav();
+  document.addEventListener('astro:page-load', bindHeaderNav);
+</script>

@@ -1,5 +1,6 @@
 export const PRICE_PLACEHOLDER = 'XX,XX €/kg';
-export const PRICE_UPDATED_AT = '[DATUM]';
+/** Stand der Richtwerte. Orientierung am veröffentlichten Ankaufsmarkt, keine Garantie. */
+export const PRICE_UPDATED_AT = '06.10.2026';
 
 export type CableCategoryId =
   | 'nym-j'
@@ -21,7 +22,12 @@ export interface CableCategory {
   description: string;
   features: string[];
   typicalUse: string;
-  /** Unverbindlicher Richtwert in €/kg. `null` = noch kein Wert hinterlegt. */
+  /**
+   * Unverbindlicher Richtwert in €/kg.
+   * Stand 06.10.2026, angelehnt an veröffentlichte Ankaufspreise
+   * (MKM Metals, Menge bis 40 kg; Marktspannen von Schrottradar/Schrottmonitor).
+   * `null` = noch kein Wert hinterlegt.
+   */
   pricePerKg: number | null;
   accepted: boolean;
 }
@@ -40,7 +46,7 @@ export const cables: CableCategory[] = [
       'Häufig aus Sanierung und Elektroinstallation',
     ],
     typicalUse: 'Wohnungs- und Gebäudeinstallation',
-    pricePerKg: null,
+    pricePerKg: 4.7,
     accepted: true,
   },
   {
@@ -52,7 +58,7 @@ export const cables: CableCategory[] = [
       'Erdverlegte Energiekabel. Ankauf nach Prüfung des Kupferanteils und der Reinheit.',
     features: ['Robustes Außenmantel-Material', 'Oft feuchtigkeitsbelastet', 'Vor Ort auf Kupferanteil geprüft'],
     typicalUse: 'Erdverlegung, Außenanlagen, Hausanschluss',
-    pricePerKg: null,
+    pricePerKg: 5.7,
     accepted: true,
   },
   {
@@ -64,7 +70,7 @@ export const cables: CableCategory[] = [
       'Leistungskabel mit höherem Querschnitt. Der Ankaufspreis richtet sich nach Leiterquerschnitt und Reinheit.',
     features: ['Große Querschnitte', 'Hoher Kupferanteil möglich', 'Prüfung und Verwiegung vor Ort'],
     typicalUse: 'Industrie, Verteiler, Energieverteilung',
-    pricePerKg: null,
+    pricePerKg: 6.1,
     accepted: true,
   },
   {
@@ -76,7 +82,7 @@ export const cables: CableCategory[] = [
       'Schlauchleitungen und Gummikabel mit feindrähtigen Kupferleitern.',
     features: ['Feindrähtige Kupferlitzen', 'PVC- oder Gummimantel', 'Gut geeignet bei sortenreiner Abgabe'],
     typicalUse: 'Geräte, Baustelle, bewegliche Anschlüsse',
-    pricePerKg: null,
+    pricePerKg: 4.7,
     accepted: true,
   },
   {
@@ -88,7 +94,7 @@ export const cables: CableCategory[] = [
       'Einzelne Adern aus Schaltschränken und Installationen. Sortenrein bewertet.',
     features: ['Massiv oder feindrähtig', 'Farbige Isolierung', 'Oft hoher Kupferanteil'],
     typicalUse: 'Schaltschrank, Installation, Verdrahtung',
-    pricePerKg: null,
+    pricePerKg: 6.1,
     accepted: true,
   },
   {
@@ -100,7 +106,7 @@ export const cables: CableCategory[] = [
       'Steuer- und Sonderleitungen aus industriellen Anlagen. Bewertung nach Aufbau und Kupferanteil.',
     features: ['Vielfältige Aufbauten', 'Schirmung möglich', 'Individuelle Prüfung vor Ort'],
     typicalUse: 'Maschinen, Anlagen, Industrieabbau',
-    pricePerKg: null,
+    pricePerKg: 4.7,
     accepted: true,
   },
   {
@@ -112,7 +118,7 @@ export const cables: CableCategory[] = [
       'Netzwerkkabel mit geringerem Kupferanteil je Kilogramm. Ankauf nach Prüfung.',
     features: ['Mehrpaarig', 'Teilweise geschirmt', 'Geringerer Kupferanteil als Energiekabel'],
     typicalUse: 'IT-Infrastruktur, Büroverkabelung',
-    pricePerKg: null,
+    pricePerKg: 3.6,
     accepted: true,
   },
   {
@@ -124,7 +130,7 @@ export const cables: CableCategory[] = [
       'Koaxial- und Telefonleitungen. Der Kupferanteil variiert stark und wird vor Ort bestimmt.',
     features: ['Unterschiedliche Schirmungen', 'Oft gemischte Chargen', 'Bewertung nach Sichtprüfung'],
     typicalUse: 'Antenne, Telefon, Altbauverkabelung',
-    pricePerKg: null,
+    pricePerKg: 2.18,
     accepted: true,
   },
   {
@@ -136,7 +142,7 @@ export const cables: CableCategory[] = [
       'Unsortierte Kabelchargen. Der Preis wird nach Sichtung, Sortierung und Verwiegung festgelegt.',
     features: ['Unterschiedliche Typen in einer Charge', 'Sortierung kann den Erlös erhöhen', 'Unverbindliche Schätzung möglich'],
     typicalUse: 'Entrümpelung, Baustellenreste, Bestände',
-    pricePerKg: null,
+    pricePerKg: 3.74,
     accepted: true,
   },
   {
@@ -148,7 +154,7 @@ export const cables: CableCategory[] = [
       'Keine Zuordnung nötig. Bringen Sie die Kabel vor Ort mit oder senden Sie ein Foto zur ersten Einschätzung.',
     features: ['Keine Vorkenntnisse erforderlich', 'Identifikation vor Ort', 'Foto-Anfrage möglich'],
     typicalUse: 'Private Bestände, unklare Herkunft',
-    pricePerKg: null,
+    pricePerKg: 3.74,
     accepted: true,
   },
 ];

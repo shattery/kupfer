@@ -26,6 +26,20 @@ export default {
         copper: '0 12px 32px -12px rgba(184, 115, 51, 0.45)',
         card: '0 1px 2px rgba(15, 23, 42, 0.04), 0 12px 32px -16px rgba(15, 23, 42, 0.12)',
       },
+      animation: {
+        'star-movement-bottom': 'star-movement-bottom linear infinite alternate',
+        'star-movement-top': 'star-movement-top linear infinite alternate',
+      },
+      keyframes: {
+        'star-movement-bottom': {
+          '0%': { transform: 'translate(0%, 0%)', opacity: '1' },
+          '100%': { transform: 'translate(-100%, 0%)', opacity: '0' },
+        },
+        'star-movement-top': {
+          '0%': { transform: 'translate(0%, 0%)', opacity: '1' },
+          '100%': { transform: 'translate(100%, 0%)', opacity: '0' },
+        },
+      },
       backgroundImage: {
         'copper-metal':
           'linear-gradient(135deg, #e8b07a 0%, #d97736 28%, #c86a32 52%, #b87333 76%, #9a5a28 100%)',

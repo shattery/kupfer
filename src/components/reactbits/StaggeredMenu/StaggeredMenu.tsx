@@ -5,6 +5,7 @@ export interface StaggeredMenuItem {
   label: string;
   ariaLabel: string;
   link: string;
+  active?: boolean;
 }
 export interface StaggeredMenuSocialItem {
   label: string;
@@ -27,6 +28,10 @@ export interface StaggeredMenuProps {
   closeOnClickAway?: boolean;
   onMenuOpen?: () => void;
   onMenuClose?: () => void;
+  /** Header kommt von außen (ein sticky Balken, kein zweiter Spacer). */
+  externalHeader?: boolean;
+  ctaHref?: string;
+  ctaLabel?: string;
 }
 
 export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
@@ -45,9 +50,13 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
   isFixed = false,
   closeOnClickAway = true,
   onMenuOpen,
-  onMenuClose
+  onMenuClose,
+  externalHeader = false,
+  ctaHref,
+  ctaLabel
 }: StaggeredMenuProps) => {
   const [open, setOpen] = useState(false);
+  const [primed, setPrimed] = useState(false);
   const openRef = useRef(false);
 
   const panelRef = useRef<HTMLDivElement | null>(null);
@@ -83,7 +92,7 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
       const icon = iconRef.current;
       const textInner = textInnerRef.current;
 
-      if (!panel || !plusH || !plusV || !icon || !textInner) return;
+      if (!panel) return;
 
       let preLayers: HTMLElement[] = [];
       if (preContainer) {
@@ -92,18 +101,21 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
       preLayerElsRef.current = preLayers;
 
       const offscreen = position === 'left' ? -100 : 100;
-      gsap.set([panel, ...preLayers], { xPercent: offscreen, opacity: 1 });
+      gsap.set([panel, ...preLayers], { x: 0, xPercent: offscreen, opacity: 1 });
       if (preContainer) {
         gsap.set(preContainer, { xPercent: 0, opacity: 1 });
       }
 
-      gsap.set(plusH, { transformOrigin: '50% 50%', rotate: 0 });
-      gsap.set(plusV, { transformOrigin: '50% 50%', rotate: 90 });
-      gsap.set(icon, { rotate: 0, transformOrigin: '50% 50%' });
+      if (plusH && plusV && icon) {
+        gsap.set(plusH, { transformOrigin: '50% 50%', rotate: 0 });
+        gsap.set(plusV, { transformOrigin: '50% 50%', rotate: 90 });
+        gsap.set(icon, { rotate: 0, transformOrigin: '50% 50%' });
+      }
 
-      gsap.set(textInner, { yPercent: 0 });
+      if (textInner) gsap.set(textInner, { yPercent: 0 });
 
       if (toggleBtnRef.current) gsap.set(toggleBtnRef.current, { color: menuButtonColor });
+      setPrimed(true);
     });
     return () => ctx.revert();
   }, [menuButtonColor, position]);
@@ -139,7 +151,7 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
     const tl = gsap.timeline({ paused: true });
 
     layerStates.forEach((ls, i) => {
-      tl.fromTo(ls.el, { xPercent: ls.start }, { xPercent: 0, duration: 0.72, ease: 'power4.out' }, i * 0.1);
+      tl.fromTo(ls.el, { x: 0, xPercent: ls.start }, { x: 0, xPercent: 0, duration: 0.72, ease: 'power4.out' }, i * 0.1);
     });
 
     const lastTime = layerStates.length ? (layerStates.length - 1) * 0.07 : 0;
@@ -148,8 +160,8 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
 
     tl.fromTo(
       panel,
-      { xPercent: panelStart },
-      { xPercent: 0, duration: panelDuration, ease: 'power4.out' },
+      { x: 0, xPercent: panelStart },
+      { x: 0, xPercent: 0, duration: panelDuration, ease: 'power4.out' },
       panelInsertTime
     );
 
@@ -227,9 +239,10 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
     const offscreen = position === 'left' ? -100 : 100;
 
     closeTweenRef.current = gsap.to(all, {
+      x: 0,
       xPercent: offscreen,
-      duration: 0.48,
-      ease: 'power3.in',
+      duration: 0.55,
+      ease: 'power3.inOut',
       overwrite: 'auto',
       onComplete: () => {
         const itemEls = Array.from(panel.querySelectorAll('.sm-panel-itemLabel')) as HTMLElement[];
@@ -373,11 +386,13 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
     if (!closeOnClickAway || !open) return;
 
     const handleClickOutside = (event: MouseEvent) => {
+      const target = event.target as Node;
+      const externalToggle = document.querySelector('[data-nav-toggle]');
       if (
         panelRef.current &&
-        !panelRef.current.contains(event.target as Node) &&
-        toggleBtnRef.current &&
-        !toggleBtnRef.current.contains(event.target as Node)
+        !panelRef.current.contains(target) &&
+        !(toggleBtnRef.current && toggleBtnRef.current.contains(target)) &&
+        !(externalToggle && externalToggle.contains(target))
       ) {
         closeMenu();
       }
@@ -389,10 +404,63 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
     };
   }, [closeOnClickAway, open, closeMenu]);
 
+  React.useEffect(() => {
+    const onToggle = () => toggleMenu();
+    window.addEventListener('site-nav-toggle', onToggle);
+    return () => window.removeEventListener('site-nav-toggle', onToggle);
+  }, [toggleMenu]);
+
+  React.useEffect(() => {
+    window.dispatchEvent(new CustomEvent('site-nav-state', { detail: { open } }));
+  }, [open]);
+
+  React.useEffect(() => {
+    if (!open) return;
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key !== 'Escape') return;
+      event.preventDefault();
+      closeMenu();
+      document.querySelector<HTMLButtonElement>('[data-nav-toggle]')?.focus();
+    };
+    document.addEventListener('keydown', onKey);
+    return () => document.removeEventListener('keydown', onKey);
+  }, [open, closeMenu]);
+
+  React.useEffect(() => {
+    if (!open) return;
+    const timeout = window.setTimeout(() => {
+      panelRef.current?.focus({ preventScroll: true });
+    }, 40);
+    return () => window.clearTimeout(timeout);
+  }, [open]);
+
+  React.useEffect(() => {
+    const main = document.querySelector('main');
+    const footer = document.querySelector('footer');
+    if (!open) return;
+    main?.setAttribute('inert', '');
+    footer?.setAttribute('inert', '');
+    return () => {
+      main?.removeAttribute('inert');
+      footer?.removeAttribute('inert');
+    };
+  }, [open]);
+
+  React.useEffect(() => {
+    const media = window.matchMedia('(min-width: 1024px)');
+    const onChange = () => {
+      if (media.matches) closeMenu();
+    };
+    media.addEventListener('change', onChange);
+    return () => media.removeEventListener('change', onChange);
+  }, [closeMenu]);
+
   return (
     <div
-      className={`sm-scope z-[70] ${isFixed ? 'fixed inset-0 w-screen h-screen overflow-hidden pointer-events-none' : 'w-full h-full'}`}
+      className={`sm-scope ${externalHeader ? 'z-30' : 'z-[70]'} ${isFixed ? 'fixed inset-0 w-screen h-screen overflow-hidden pointer-events-none' : 'w-full h-full'}`}
       data-open={open || undefined}
+      data-primed={primed ? '' : undefined}
+      data-external-header={externalHeader ? '' : undefined}
     >
       <div
         className={
@@ -417,13 +485,14 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
             return arr.map((c, i) => (
               <div
                 key={i}
-                className="sm-prelayer absolute top-0 right-0 h-full w-full translate-x-0"
+                className="sm-prelayer absolute top-0 right-0 h-full w-full"
                 style={{ background: c }}
               />
             ));
           })()}
         </div>
 
+        {!externalHeader && (
         <header
           className="staggered-menu-header absolute top-0 left-0 w-full flex items-center justify-between p-[2em] bg-transparent pointer-events-none z-20"
           aria-label="Main navigation header"
@@ -480,13 +549,16 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
             </span>
           </button>
         </header>
+        )}
 
         <aside
           id="staggered-menu-panel"
           ref={panelRef}
-          className="staggered-menu-panel absolute top-0 right-0 h-full bg-white flex flex-col p-[6em_2em_2em_2em] overflow-y-auto z-10 backdrop-blur-[12px] pointer-events-auto"
-          style={{ WebkitBackdropFilter: 'blur(12px)' }}
+          className="staggered-menu-panel absolute top-0 right-0 h-full flex flex-col overflow-y-auto z-10 pointer-events-auto"
           aria-hidden={!open}
+          aria-label="Menü"
+          inert={!open}
+          tabIndex={-1}
         >
           <div className="sm-panel-inner flex-1 flex flex-col gap-5">
             <ul
@@ -498,10 +570,12 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
                 items.map((it, idx) => (
                   <li className="sm-panel-itemWrap relative overflow-hidden leading-none" key={it.label + idx}>
                     <a
-                      className="sm-panel-item relative text-black font-semibold text-[4rem] cursor-pointer leading-none tracking-[-2px] uppercase transition-[background,color] duration-150 ease-linear inline-block no-underline pr-[1.4em]"
+                      className="sm-panel-item relative inline-block cursor-pointer no-underline"
                       href={it.link}
                       aria-label={it.ariaLabel}
+                      aria-current={it.active ? 'page' : undefined}
                       data-index={idx + 1}
+                      onClick={() => closeMenu()}
                     >
                       <span className="sm-panel-itemLabel inline-block [transform-origin:50%_100%] will-change-transform">
                         {it.label}
@@ -519,6 +593,12 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
                 </li>
               )}
             </ul>
+
+            {ctaHref && ctaLabel ? (
+              <a href={ctaHref} className="btn-copper mt-8 self-start" onClick={() => closeMenu()}>
+                {ctaLabel}
+              </a>
+            ) : null}
 
             {displaySocials && socialItems && socialItems.length > 0 && (
               <div className="sm-socials mt-auto pt-8 flex flex-col gap-3" aria-label="Social links">
@@ -569,7 +649,7 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
 .sm-scope [data-position='left'] .staggered-menu-panel { right: auto; left: 0; }
 .sm-scope .sm-prelayers { position: absolute; top: 0; right: 0; bottom: 0; width: clamp(260px, 38vw, 420px); pointer-events: none; z-index: 5; }
 .sm-scope [data-position='left'] .sm-prelayers { right: auto; left: 0; }
-.sm-scope .sm-prelayer { position: absolute; top: 0; right: 0; height: 100%; width: 100%; transform: translateX(0); }
+.sm-scope .sm-prelayer { position: absolute; top: 0; right: 0; height: 100%; width: 100%; }
 .sm-scope .sm-panel-inner { flex: 1; display: flex; flex-direction: column; gap: 1.25rem; }
 .sm-scope .sm-socials { margin-top: auto; padding-top: 2rem; display: flex; flex-direction: column; gap: 0.75rem; }
 .sm-scope .sm-socials-title { margin: 0; font-size: 1rem; font-weight: 500; color: var(--sm-accent, #ff0000); }
@@ -584,22 +664,35 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
 .sm-scope .sm-socials-link:hover { color: var(--sm-accent, #ff0000); }
 .sm-scope .sm-panel-title { margin: 0; font-size: 1rem; font-weight: 600; color: #fff; text-transform: uppercase; }
 .sm-scope .sm-panel-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 0.5rem; }
-.sm-scope .sm-panel-item { position: relative; color: #000; font-weight: 600; font-size: 4rem; cursor: pointer; line-height: 1; letter-spacing: -2px; text-transform: uppercase; transition: background 0.25s, color 0.25s; display: inline-block; text-decoration: none; padding-right: 1.4em; }
+.sm-scope .sm-panel-item { position: relative; color: #e2e8f0; font-weight: 500; font-size: 1.5rem; cursor: pointer; line-height: 1.25; letter-spacing: -0.02em; text-transform: none; transition: color 0.2s; display: inline-block; text-decoration: none; padding-right: 0; font-family: Outfit, system-ui, sans-serif; }
 .sm-scope .sm-panel-itemLabel { display: inline-block; will-change: transform; transform-origin: 50% 100%; }
-.sm-scope .sm-panel-item:hover { color: var(--sm-accent, #ff0000); }
+.sm-scope .sm-panel-item:hover,
+.sm-scope .sm-panel-item:focus-visible { color: #fffaf5; }
+.sm-scope .sm-panel-item[aria-current='page'] { color: #f4e6d4; }
+.sm-scope .sm-panel-item[aria-current='page'] .sm-panel-itemLabel { box-shadow: inset 0 -2px 0 #d97736; }
+.sm-scope .staggered-menu-panel:focus { outline: none; }
+.sm-scope .sm-panel-item:focus-visible { outline: 2px solid rgba(232, 176, 122, 0.9); outline-offset: 4px; border-radius: 0.3rem; }
 .sm-scope .sm-panel-list[data-numbering] { counter-reset: smItem; }
 .sm-scope .sm-panel-list[data-numbering] .sm-panel-item::after { counter-increment: smItem; content: counter(smItem, decimal-leading-zero); position: absolute; top: 0.1em; right: 3.2em; font-size: 18px; font-weight: 400; color: var(--sm-accent, #ff0000); letter-spacing: 0; pointer-events: none; user-select: none; opacity: var(--sm-num-opacity, 0); }
-@media (max-width: 1024px) { .sm-scope .staggered-menu-panel { width: 100%; left: 0; right: 0; } .sm-scope .staggered-menu-wrapper[data-open] .sm-logo-img { filter: invert(100%); } }
+@media (max-width: 1024px) {
+  .sm-scope .staggered-menu-panel,
+  .sm-scope .sm-prelayers { width: 100%; left: 0; right: 0; }
+}
 
 .sm-scope .sm-toggle { background: transparent !important; box-shadow: none !important; border: none !important; color: #fff; font-size: 1rem; letter-spacing: 0.02em; padding: 0.35rem 0.15rem; }
 .sm-scope .sm-toggle-line { font-family: Outfit, system-ui, sans-serif; font-weight: 600; }
-.sm-scope .staggered-menu-header { padding: 1.15rem 1.25rem; }
-.sm-scope .sm-panel-item { font-size: clamp(1.75rem, 8vw, 3.25rem) !important; letter-spacing: -0.04em !important; }
-.sm-scope .sm-panel-list[data-numbering] .sm-panel-item::after { right: 0.15em; top: 0.15em; }
-.sm-scope .staggered-menu-panel { background: #fffaf5; }
+.sm-scope .staggered-menu-header { height: 4.25rem; padding: 0 1.1rem; background: rgba(2, 6, 23, 0.95); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border-bottom: 1px solid rgba(255,255,255,0.1); }
+.sm-scope .sm-logo-img { height: 28px; }
+.sm-scope .sm-panel-inner { gap: 0.5rem; }
+.sm-scope .sm-panel-list { gap: 0.35rem; }
+.sm-scope .sm-panel-item { font-size: clamp(1.35rem, 4.6vw, 1.8rem) !important; letter-spacing: -0.02em !important; text-transform: none !important; font-weight: 500; line-height: 1.25; padding-right: 0; color: #e2e8f0; font-family: Outfit, system-ui, sans-serif; }
+.sm-scope .sm-panel-list[data-numbering] .sm-panel-item::after { right: 0.1em; top: 0.2em; font-size: 0.85rem; }
+.sm-scope .staggered-menu-panel { background: #0c111c; padding: 1.75rem 1.35rem 2rem; }
 .sm-scope .sm-prelayer { opacity: 1; }
-.sm-scope.fixed { --sm-accent: #b87333; }
-@media (max-width: 640px) { .sm-scope .staggered-menu-panel { width: 100%; left: 0; right: 0; } .sm-scope .staggered-menu-wrapper[data-open] .sm-logo-img { filter: invert(100%); } }
+.sm-scope[data-external-header] .staggered-menu-panel,
+.sm-scope[data-external-header] .sm-prelayers { top: 4.25rem; height: calc(100% - 4.25rem); bottom: auto; }
+.sm-scope:not([data-primed]) .staggered-menu-panel,
+.sm-scope:not([data-primed]) .sm-prelayer { visibility: hidden; pointer-events: none; }
       `}</style>
     </div>
   );

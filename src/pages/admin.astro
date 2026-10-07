@@ -1,7 +1,7 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import PageHero from '../components/PageHero.astro';
-import AdminDashboard from '../components/react/AdminDashboard';
+import AdminGate from '../components/react/AdminGate';
 import { site } from '../data/site';
 ---
 
@@ -14,12 +14,12 @@ import { site } from '../data/site';
   <PageHero
     eyebrow="Intern"
     title="Preispflege und Anfragen"
-    text="Leichtgewichtiger lokaler Admin. Daten liegen in diesem Browser (localStorage), nicht auf einem Server."
+    text="Leichtgewichtiger lokaler Admin. Nach PIN-Freigabe: Daten nur in diesem Browser (localStorage)."
   />
 
   <section class="py-16">
     <div class="section-shell">
-      <AdminDashboard client:only="react" />
+      <AdminGate client:only="react" />
     </div>
   </section>
 </Layout>

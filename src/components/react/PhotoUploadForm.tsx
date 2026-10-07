@@ -112,7 +112,8 @@ export default function PhotoUploadForm() {
   }
 
   return (
-    <form onSubmit={onSubmit} className="surface-card p-6 sm:p-8">
+    <div className="surface-card">
+    <form onSubmit={onSubmit} className="p-6 sm:p-8">
       <div className="mb-8">
         <p className="kicker">Foto-Anfrage</p>
         <h2 className="mt-2 font-display text-2xl font-semibold tracking-tight text-slate-950 sm:text-3xl">
@@ -249,5 +250,6 @@ export default function PhotoUploadForm() {
         {sending ? 'Wird gesendet…' : 'Foto-Anfrage senden'}
       </button>
     </form>
+    </div>
   );
 }

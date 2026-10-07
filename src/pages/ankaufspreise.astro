@@ -1,6 +1,7 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import PageHero from '../components/PageHero.astro';
+import CopperCta from '../components/react/CopperCta';
 import PriceTable from '../components/react/PriceTable';
 import { site } from '../data/site';
 ---
@@ -18,12 +19,12 @@ import { site } from '../data/site';
 
   <section class="py-16">
     <div class="section-shell">
-      <PriceTable client:load />
+      <PriceTable client:visible />
       <p class="mt-6 max-w-3xl text-sm leading-relaxed text-slate-600">
         Die Tabelle dient der Orientierung. Preise können je nach Reinheit, Mix und Marktlage abweichen.
         Nutzen Sie den Rechner für eine Schätzung und verkaufen Sie ausschließlich vor Ort.
       </p>
-      <a href="/kabel-verkaufen" class="btn-copper mt-8">KABEL VERKAUFEN</a>
+      <CopperCta client:visible className="mt-8" href="/kabel-verkaufen" label="KABEL VERKAUFEN" />
     </div>
   </section>
 </Layout>

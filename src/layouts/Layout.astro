@@ -2,6 +2,7 @@
 import '../styles/global.css';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import ClickSpark from '../components/reactbits/ClickSpark/ClickSpark';
 import { site } from '../data/site';
 
 interface Props {
@@ -40,14 +41,23 @@ const canonical = Astro.url.pathname;
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Outfit:wght@500;600;700&display=swap"
       rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Outfit:wght@600;700&display=swap"
+      media="print"
+      onload="this.media='all'"
     />
+    <noscript>
+      <link
+        rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Outfit:wght@600;700&display=swap"
+      />
+    </noscript>
   </head>
   <body class="min-h-screen font-sans">
     <a href="#content" class="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:rounded-full focus:bg-white focus:px-4 focus:py-2">
       Zum Inhalt
     </a>
+    <ClickSpark client:idle sparkColor="#e8b07a" sparkCount={10} sparkRadius={22} sparkSize={9} duration={460} />
     <Header currentPath={Astro.url.pathname} />
     <main id="content">
       <slot />

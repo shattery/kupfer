@@ -80,7 +80,8 @@ export default function B2BInquiryForm() {
   }
 
   return (
-    <form onSubmit={onSubmit} className="surface-card p-6 sm:p-8">
+    <div className="surface-card">
+    <form onSubmit={onSubmit} className="p-6 sm:p-8">
       <div className="mb-8 flex items-start gap-3">
         <div className="rounded-xl bg-copper-50 p-2 text-copper-700">
           <Building2 className="h-5 w-5" />
@@ -195,5 +196,6 @@ export default function B2BInquiryForm() {
         {sending ? 'Wird gesendet…' : 'B2B-Anfrage senden'}
       </button>
     </form>
+    </div>
   );
 }

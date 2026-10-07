@@ -3,7 +3,7 @@
 > Nur Module aktivieren, die live sind. Aktuell im Code u. a.: Kontakt-/B2B-Formulare, Foto-Upload, **Formspree** (`formspree.io`).
 
 ## 1. Verantwortlicher
-[FIRMENNAME, Anschrift, E-Mail] — wie Impressum
+Cupravo, [Anschrift], [E-Mail] — wie Impressum
 
 ## 2. Hosting
 [Anbieter, Sitz, Serverstandort] — Art. 6 Abs. 1 lit. f DSGVO

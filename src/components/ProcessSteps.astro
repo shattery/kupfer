@@ -1,29 +1,29 @@
 ---
-import { processSteps } from '../data/site';
+import ProcessGrid from './react/ProcessGrid';
+import BlurText from './reactbits/BlurText/BlurText';
+
+interface Props {
+  tone?: 'white' | 'muted';
+}
+
+const { tone = 'white' } = Astro.props;
 ---
 
-<section class="bg-white py-20">
+<section class:list={['py-20', tone === 'muted' ? 'bg-slate-50' : 'bg-white']}>
   <div class="section-shell">
     <div class="max-w-2xl">
       <p class="kicker">Ablauf</p>
-      <h2 class="mt-3 font-display text-3xl font-semibold tracking-tight text-slate-950 sm:text-4xl">
-        Fünf Schritte bis zur Auszahlung
-      </h2>
+      <BlurText
+        client:visible
+        as="h2"
+        text="Fünf Schritte bis zur Auszahlung"
+        className="mt-3 font-display text-3xl font-semibold tracking-tight text-slate-950 sm:text-4xl"
+      />
       <p class="mt-3 text-slate-600">
         Klar, nachvollziehbar und ausschließlich vor Ort am Firmenstandort.
       </p>
     </div>
 
-    <ol class="mt-12 grid gap-5 md:grid-cols-5">
-      {
-        processSteps.map((step) => (
-          <li class="relative rounded-2xl border border-slate-200 bg-slate-50 p-5">
-            <span class="font-display text-3xl font-semibold text-copper-500">{step.number}</span>
-            <h3 class="mt-3 font-display text-lg font-semibold text-slate-950">{step.title}</h3>
-            <p class="mt-2 text-sm leading-relaxed text-slate-600">{step.text}</p>
-          </li>
-        ))
-      }
-    </ol>
+    <ProcessGrid client:visible />
   </div>
 </section>

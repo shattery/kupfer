@@ -2,6 +2,7 @@
 import Layout from '../layouts/Layout.astro';
 import PageHero from '../components/PageHero.astro';
 import ProcessSteps from '../components/ProcessSteps.astro';
+import CopperCta from '../components/react/CopperCta';
 import PhotoUploadForm from '../components/react/PhotoUploadForm';
 import { site } from '../data/site';
 ---
@@ -30,7 +31,7 @@ import { site } from '../data/site';
           <li>Große Mengen bitte vorab über den B2B-Bereich anfragen.</li>
           <li>Es gibt keine Annahme von Sendungen – nur persönliche Abgabe vor Ort.</li>
         </ul>
-        <a href="/vor-ort-verkaufen" class="btn-copper mt-8">Standort & Öffnungszeiten</a>
+        <CopperCta client:visible className="mt-8" href="/vor-ort-verkaufen" label="Standort & Öffnungszeiten" />
       </div>
       <PhotoUploadForm client:visible />
     </div>

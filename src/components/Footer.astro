@@ -5,7 +5,10 @@ import { mapsSearchUrl, navItems, site } from '../data/site';
 <footer class="bg-slate-950 text-slate-300">
   <div class="section-shell grid gap-10 py-16 sm:grid-cols-2 lg:grid-cols-4">
     <div>
-      <p class="font-display text-lg font-semibold text-white">{site.name}</p>
+      <a href="/" class="inline-flex items-center gap-2.5 text-white">
+        <img src="/logo-mark.svg" alt="Cupravo" width="36" height="36" class="h-9 w-9 shrink-0" />
+        <span aria-hidden="true" class="font-display text-lg font-semibold">{site.name}</span>
+      </a>
       <p class="mt-3 max-w-xs text-sm leading-relaxed text-slate-400">
         Ankauf von Kupferkabeln ausschließlich vor Ort. Transparent geprüft, verwogen und ausgezahlt.
       </p>
@@ -35,7 +38,8 @@ import { mapsSearchUrl, navItems, site } from '../data/site';
           </li>
         ))}
         <li><a href="/ueber-uns" class="hover:text-white">Über uns</a></li>
-        <li><a href="/admin" class="hover:text-white">Admin</a></li>
+        <li><a href="/impressum" class="hover:text-white">Impressum</a></li>
+        <li><a href="/datenschutz" class="hover:text-white">Datenschutz</a></li>
       </ul>
     </div>
   </div>

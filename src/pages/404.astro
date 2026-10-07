@@ -1,5 +1,7 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import CopperCta from '../components/react/CopperCta';
+import GradientText from '../components/reactbits/GradientText/GradientText';
 import { site } from '../data/site';
 ---
 
@@ -9,10 +11,17 @@ import { site } from '../data/site';
 >
   <section class="py-24">
     <div class="section-shell max-w-xl text-center">
-      <p class="kicker">404</p>
+      <GradientText
+        client:idle
+        className="mx-auto font-display text-7xl font-semibold"
+        colors={['#9a5a28', '#e8b07a', '#d97736', '#fff7ee']}
+        animationSpeed={6}
+      >
+        404
+      </GradientText>
       <h1 class="mt-3 font-display text-4xl font-semibold text-slate-950">Seite nicht gefunden</h1>
       <p class="mt-3 text-slate-600">Die Adresse existiert nicht. Der Ankauf findet weiterhin ausschließlich vor Ort statt.</p>
-      <a href="/" class="btn-copper mt-8">Zur Startseite</a>
+      <CopperCta client:idle className="mt-8" href="/" label="Zur Startseite" />
     </div>
   </section>
 </Layout>

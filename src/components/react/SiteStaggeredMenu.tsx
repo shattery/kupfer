@@ -1,34 +1,38 @@
 import StaggeredMenu from '../reactbits/StaggeredMenu/StaggeredMenu';
-import { navItems } from '../../data/site';
+import { isNavActive, moreNav, primaryNav } from '../../data/site';
 
-export default function SiteStaggeredMenu() {
+interface Props {
+  currentPath?: string;
+}
+
+export default function SiteStaggeredMenu({ currentPath = '' }: Props) {
   const items = [
-    ...navItems.map((item) => ({
-      label: item.label,
-      ariaLabel: item.label,
-      link: item.href,
-    })),
-    {
-      label: 'Kabel verkaufen',
-      ariaLabel: 'Kabel verkaufen',
-      link: '/kabel-verkaufen',
-    },
-  ];
+    ...primaryNav.filter((item) => item.href !== '/kontakt'),
+    ...moreNav,
+    ...primaryNav.filter((item) => item.href === '/kontakt'),
+  ].map((item) => ({
+    label: item.label,
+    ariaLabel: item.label,
+    link: item.href,
+    active: isNavActive(currentPath, item.href),
+  }));
 
   return (
     <StaggeredMenu
       position="left"
       isFixed
+      externalHeader
       items={items}
       displaySocials={false}
-      displayItemNumbering
-      colors={['#3f2512', '#9a5a28', '#b87333']}
-      accentColor="#b87333"
+      displayItemNumbering={false}
+      colors={['#1a100a', '#6b3e1e']}
+      accentColor="#e8b07a"
       menuButtonColor="#ffffff"
-      openMenuButtonColor="#0f172a"
-      logoUrl="/logo-mark.svg"
+      openMenuButtonColor="#ffffff"
       closeOnClickAway
-      changeMenuColorOnOpen
+      changeMenuColorOnOpen={false}
+      ctaHref="/kabel-verkaufen"
+      ctaLabel="KABEL VERKAUFEN"
     />
   );
 }

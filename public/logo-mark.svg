@@ -1,4 +1,17 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
-  <rect width="64" height="64" rx="14" fill="#b87333"/>
-  <text x="32" y="42" text-anchor="middle" font-family="Outfit, system-ui, sans-serif" font-size="28" font-weight="700" fill="white">K</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="none" role="img" aria-labelledby="cupravoMarkTitle">
+  <title id="cupravoMarkTitle">Cupravo</title>
+  <desc>Eigenes Zeichen für Cupravo: Kupfer-Kabelschuh in einem gerundeten Kupferfeld. Original für diese Seite, kommerziell nutzbar.</desc>
+  <defs>
+    <linearGradient id="cupravoMarkMetal" x1="2" y1="1" x2="30" y2="31" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#f2c9a2"/>
+      <stop offset="0.16" stop-color="#e8b07a"/>
+      <stop offset="0.42" stop-color="#d97736"/>
+      <stop offset="0.7" stop-color="#c46a30"/>
+      <stop offset="1" stop-color="#9a5a28"/>
+    </linearGradient>
+  </defs>
+  <rect width="32" height="32" rx="8" fill="url(#cupravoMarkMetal)"/>
+  <path d="M8.2 1.6h15.2C27.2 1.6 30 4 30 7.6v2.2C23.4 7.2 16.2 6.6 9.2 8.8 6.4 6.2 6.2 3.2 8.2 1.6Z" fill="#fff" fill-opacity="0.16"/>
+  <path fill="#fffaf3" fill-rule="evenodd" d="M16.7 16a5.55 5.55 0 1 1-11.1 0 5.55 5.55 0 0 1 11.1 0zm-2.65 0a2.9 2.9 0 1 0-5.8 0 2.9 2.9 0 0 0 5.8 0z"/>
+  <path fill="#fffaf3" fill-rule="evenodd" d="M14.35 13.35h10.05c1.42 0 2.35 1.02 2.35 2.32v.66c0 1.3-.93 2.32-2.35 2.32H14.35v-5.3zM18.05 13.35h.95v5.3h-.95v-5.3zM20.55 13.35h.95v5.3h-.95v-5.3z"/>
 </svg>

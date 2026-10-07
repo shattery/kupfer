@@ -46,8 +46,54 @@
     @apply rounded-2xl border border-slate-200/80 bg-white shadow-card;
   }
 
+  .hero-wash {
+    background:
+      radial-gradient(ellipse at 18% 20%, rgba(232, 165, 106, 0.45), transparent 52%),
+      radial-gradient(ellipse at 80% 0%, rgba(255, 244, 228, 0.24), transparent 46%),
+      radial-gradient(ellipse at 72% 88%, rgba(200, 106, 50, 0.34), transparent 50%);
+  }
+
   .kicker {
     @apply text-xs font-semibold uppercase tracking-[0.22em] text-copper-500;
+  }
+
+  .price-calc {
+    container-type: inline-size;
+    container-name: price-calc;
+  }
+
+  .price-calc-grid {
+    display: grid;
+    gap: 1.5rem;
+    min-width: 0;
+  }
+
+  .price-calc-grid > * {
+    min-width: 0;
+  }
+}
+
+@container price-calc (min-width: 42rem) {
+  .price-calc-grid {
+    grid-template-columns: minmax(0, 1.05fr) minmax(18rem, 0.95fr);
+    align-items: stretch;
+  }
+
+  .price-calc-result {
+    height: 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .blur-text-word {
+    filter: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  .animate-star-movement-bottom,
+  .animate-star-movement-top {
+    animation: none !important;
   }
 }
 
